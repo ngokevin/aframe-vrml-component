@@ -1,0 +1,830 @@
+#VRML V2.0 utf8
+#coaster 2
+#Extend the coaster by animating a viewpoint
+#Andy Harris, 11/98
+
+Transform {
+  children [
+    # the concrete slab
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor .7 .7 .7
+        } # end material
+      } # end appearance
+      geometry Box {
+        size 42 .1 22
+      } # end geometry
+    } # end slab
+
+    #the coaster itself
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor .5 .5 .5
+        } # end material
+      } # end appearance
+      geometry Extrusion {
+        convex FALSE
+        solid FALSE
+        crossSection [
+            0  .1,
+          -.4  .1,
+          -.4  .3,
+          -.5  .3,
+          -.5 -.1,
+           .5 -.1,
+           .5  .3,
+           .4  .3,
+           .4  .1,
+            0  .1
+        ] # end cross section
+        #read spine from BOTTOM UP!!!
+        spine [
+           0    1  10,  # home again
+           17   1  10,  # end turn 4
+           20   1   7,  # start turn 4
+           20  10  -7,  # end turn 3
+           17  10 -10,  # start turn 3
+            5  7  -11,  # end loop
+           -1  10 -11,  # end vertical
+           -1  12 -11,  # start vertical
+            1  14 -11,  # end top of loop 
+            3  14 -10,  # start top of loop
+            5  12 -10,  # end vertical
+            5  10 -10,  # start vertical
+            0   4 -10,  # start of climb 2
+           -5   4 -10,  # bottom of hill 1
+          -17  15 -10,  # turn 2 end
+          -20  15  -7,  # turn 2 start, top of hill 1
+          -20   1   7,  # turn 1 end, climb hill 1
+          -17   1  10,  #turn 1 start
+            0   1  10,  #begin
+        ] # end spine
+        orientation [
+           0 1 0 0,  # home again
+           0 1 0 0,  # end turn 4
+           0 1 0 -.785,  # start turn 4
+           0 1 0 0,  # end turn 3
+           0 1 0 -.785,  # start turn 3
+           0 1 0 1.54,  # end loop
+           0 1 0 1.540,  # end vertical
+           0 1 0 1.54,  # start vertical
+           0 1 0 1.54,  # end top of loop 
+           0 1 0 1.54,  # start top of loop
+           0 1 0 1.54,  # end vertical
+           0 1 0 1.54,  # start vertical
+           0 1 0 1.54,  # start of climb 2
+           0 1 0 1.54,  # bottom of hill 1
+           0 1 0 0,  # turn 2 end
+           0 1 0 .785,  # turn 2 start, top of hill 1
+           0 1 0 -.785,  # turn 1 end, climb hill 1
+           0 1 0 0,  #turn 1 start
+           0 1 0 0,  #begin
+         ] # end orientation
+
+      } # end extrusion
+    } # end shape
+  ] # end children
+} # end transform
+
+#station house
+Transform {
+  translation 0 1 10 
+  children [
+    # main building
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 .6 .6
+        } # end material
+      } # end appearance
+      geometry Box {
+        size 4, 2, 2
+      } # end box
+    } # end shape
+
+    # sign
+    Transform {
+      translation 0 .5 1.1
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 1
+            } # end material
+          } # end appearance
+          geometry Text {
+            string [ "The" "Interpolator" ]
+            fontStyle FontStyle {
+              style "ITALIC"
+              justify "MIDDLE"
+              size .8
+            } # end fontStyle
+          } # end text
+        } # end sign shape
+      ] # end sign children
+    } # end sign transform
+
+  ] # end station children
+} # end station house
+
+#support beams
+Transform {
+  translation 17 .5 10
+  children [
+    DEF beam Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor .5 .5 .5
+        } # end material
+      } # end appearance
+      geometry Cylinder {
+        radius .25
+        height 1
+      } # end cylinder
+    } # end beam
+  ] # end children
+} # end transform
+
+Transform {
+  translation -17 .5 10
+  children USE beam
+} # end transform        
+
+Transform {
+  translation -20 .5 7
+  children USE beam
+} # end transform        
+
+Transform {
+  scale 1 15 1 
+  translation -20 7.5 -7
+  children USE beam
+} # end transform        
+
+Transform {
+  scale 1 15 1
+  translation -17 7.5 -10
+  children USE beam
+} # end transform        
+
+Transform {
+  scale 1 4 1
+  translation -5 2 -10
+  children USE beam
+} # end transform        
+
+Transform {
+  scale 1 4 1
+  translation 0 2 -10
+  children USE beam
+} # end transform        
+
+Transform {
+  # 5 7 -11
+  scale 1 7 1
+  translation 5 3.5 -11
+  children USE beam
+} # end transform        
+
+Transform {
+  # 17  10 -10,  # start turn 3
+  scale 1 10 1
+  translation 17 5 -10
+  children USE beam
+} # end transform        
+
+Transform {
+  # 20  10  -7,  # end turn 3
+  scale 1 10 1
+  translation 20 5 -7
+  children USE beam
+} # end transform        
+
+Transform {
+  translation 20 .5 7
+  children USE beam
+} # end transform        
+
+#change the initial point of view
+DEF rider Viewpoint{
+  description "overview"
+  position 0 10 40
+}# end viewpoint
+
+#add in some background colors
+Background{
+  skyColor [ 
+
+    #dark blue at north pole, white at horizon
+    0 .2 .7,
+    0 .5 1,
+    1 1 1
+  ]# end skyColor
+  # these angles mean 'evenly interpolate colors from top of sky 
+  # to horizon
+  skyAngle [1.309, 1.571 ]
+
+  # the ground color works the same way, except it 
+  # goes from the 'south pole' to horizon
+  groundColor [
+    0 .1 .1,
+    .2 .6 .2
+    .2 .4 .25 ,
+  ] # end groundColor
+  groundAngle [ 1.309, 1.571 ]
+
+} # end background
+
+DEF ball Transform {
+  translation  0 0 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        } # end material
+      } # end appearance
+      geometry Sphere {
+        radius .5
+      } # end geometry
+    } # end shape
+  ] # end children
+} # end ball
+
+DEF ballTwo Transform {
+  translation  0 0 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        } # end material
+      } # end appearance
+      geometry Sphere {
+        radius .5
+      } # end geometry
+    } # end shape
+  ] # end children
+} # end ballTwo
+
+
+DEF clock TimeSensor {
+  loop TRUE
+  cycleInterval 30
+}
+
+
+DEF thePath PositionInterpolator {
+  key [
+    0         # begin                                  
+    .2	      # turn 1 start                           
+    .25	      # turn 1 end, climb hill 1              
+    .45	      # turn 2 start, top of hill 1           
+    .47	      # turn 2 end                            
+    .50	      # bottom of hill 1                      
+    .51	      # start of climb 2                      
+    .53	      # start vertical                        
+    .54	      # end vertical                          
+    .55	      # start top of loop                     
+    .56	      # end top of loop                       
+    .57	      # start vertical                        
+    .58	      # end vertical                          
+    .59	      # end loop                             
+    .65	      # start turn 3                          
+    .67	      # end turn 3                            
+    .7	      # start turn 4                          
+    .78	      # end turn 4                            
+    .9	      # home again                            
+    1	      # and again                            
+  ] # end key
+
+  keyValue [
+            0   1.5   10,  #begin                                  
+          -17   1.5   10,  #turn 1 start                           
+          -20   1.5    7,  # turn 1 end, climb hill 1              
+          -20  15.5   -7,  # turn 2 start, top of hill 1           
+          -17  15.5  -10,  # turn 2 end                            
+           -5   4.5  -10,  # bottom of hill 1                      
+            0   4.5  -10,  # start of climb 2                      
+            4.5  10  -10,  # start vertical                        
+            4.5  12  -10,  # end vertical                          
+            3  13.5  -10,  # start top of loop                     
+            1  13.5  -11,  # end top of loop                       
+           -0.5  12  -11,  # start vertical                        
+           -0.5  10  -11,  # end vertical                          
+            5   7.5   -11,  # end loop                             
+           17  10.5  -10,  # start turn 3                          
+           20  10.5   -7,  # end turn 3                            
+           20   1.5    7,  # start turn 4                          
+           17   1.5   10,  # end turn 4                            
+           0    1.5   10,  # home again                            
+           0    1.5   10,   # and again                            
+  ] # end points
+} # end thePath
+
+DEF pathTwo PositionInterpolator {
+  #Identical to path one, but a touch behind
+  key [
+    0         # begin                                  
+    .205      # turn 1 start                           
+    .255      # turn 1 end, climb hill 1              
+    .455      # turn 2 start, top of hill 1           
+    .475      # turn 2 end                            
+    .505      # bottom of hill 1                      
+    .515      # start of climb 2                      
+    .535      # start vertical                        
+    .545      # end vertical                          
+    .555      # start top of loop                     
+    .565      # end top of loop                       
+    .575      # start vertical                        
+    .585      # end vertical                          
+    .595      # end loop                             
+    .655      # start turn 3                          
+    .675      # end turn 3                            
+    .705      # start turn 4                          
+    .785      # end turn 4                            
+    .905      # home again                            
+    1	      # and again                            
+  ] # end key
+
+  keyValue [
+            0   1.5   10,  #begin                                  
+          -17   1.5   10,  #turn 1 start                           
+          -20   1.5    7,  # turn 1 end, climb hill 1              
+          -20  15.5   -7,  # turn 2 start, top of hill 1           
+          -17  15.5  -10,  # turn 2 end                            
+           -5   4.5  -10,  # bottom of hill 1                      
+            0   4.5  -10,  # start of climb 2                      
+            4.5  10  -10,  # start vertical                        
+            4.5  12  -10,  # end vertical                          
+            3  13.5  -10,  # start top of loop                     
+            1  13.5  -11,  # end top of loop                       
+           -0.5  12  -11,  # start vertical                        
+           -0.5  10  -11,  # end vertical                          
+            5   7.5   -11,  # end loop                             
+           17  10.5  -10,  # start turn 3                          
+           20  10.5   -7,  # end turn 3                            
+           20   1.5    7,  # start turn 4                          
+           17   1.5   10,  # end turn 4                            
+           0    1.5   10,  # home again                            
+           0    1.5   10,   # and again                            
+  ] # end points
+
+} # end thePath
+
+DEF thePath PositionInterpolator {
+  key [
+    0         # begin                                  
+    .2	      # turn 1 start                           
+    .25	      # turn 1 end, climb hill 1              
+    .45	      # turn 2 start, top of hill 1           
+    .47	      # turn 2 end                            
+    .50	      # bottom of hill 1                      
+    .51	      # start of climb 2                      
+    .53	      # start vertical                        
+    .54	      # end vertical                          
+    .55	      # start top of loop                     
+    .56	      # end top of loop                       
+    .57	      # start vertical                        
+    .58	      # end vertical                          
+    .59	      # end loop                             
+    .65	      # start turn 3                          
+    .67	      # end turn 3                            
+    .7	      # start turn 4                          
+    .78	      # end turn 4                            
+    .9	      # home again                            
+    1	      # and again                            
+  ] # end key
+
+  keyValue [
+            0   1.5   10,  #begin                                  
+          -17   1.5   10,  #turn 1 start                           
+          -20   1.5    7,  # turn 1 end, climb hill 1              
+          -20  15.5   -7,  # turn 2 start, top of hill 1           
+          -17  15.5  -10,  # turn 2 end                            
+           -5   4.5  -10,  # bottom of hill 1                      
+            0   4.5  -10,  # start of climb 2                      
+            4.5  10  -10,  # start vertical                        
+            4.5  12  -10,  # end vertical                          
+            3  13.5  -10,  # start top of loop                     
+            1  13.5  -11,  # end top of loop                       
+           -0.5  12  -11,  # start vertical                        
+           -0.5  10  -11,  # end vertical                          
+            5   7.5   -11,  # end loop                             
+           17  10.5  -10,  # start turn 3                          
+           20  10.5   -7,  # end turn 3                            
+           20   1.5    7,  # start turn 4                          
+           17   1.5   10,  # end turn 4                            
+           0    1.5   10,  # home again                            
+           0    1.5   10,   # and again                            
+  ] # end points
+} # end thePath
+
+DEF riderY OrientationInterpolator {
+  #Handles the YAW (variation along the Y axis) of the rider
+  key [
+    0         # begin                                  
+    .205      # turn 1 start                           
+    .255      # turn 1 end, climb hill 1              
+    .455      # turn 2 start, top of hill 1           
+    .475      # turn 2 end                            
+    .505      # bottom of hill 1                      
+    .515      # start of climb 2                      
+    .535      # start vertical                        
+    .545      # end vertical                          
+    .555      # start top of loop                     
+    .565      # end top of loop                       
+    .575      # start vertical                        
+    .585      # end vertical                          
+    .595      # end loop                             
+    .655      # start turn 3                          
+    .675      # end turn 3                            
+    .705      # start turn 4                          
+    .785      # end turn 4                            
+    .905      # home again                            
+    1	      # and again                            
+  ] # end key
+
+  keyValue [
+    0 1 0  1.57      # 1 begin                                  
+    0 1 0  0.78      # 2 turn 1 start                           
+    0 1 0  0.00      # 3 turn 1 end, climb hill 1              
+    0 1 0 -0.78      # 4 turn 2 start, top of hill 1           
+    0 1 0 -1.57      # 5 turn 2 end                            
+    0 1 0 -1.57      # 6 bottom of hill 1                      
+    0 1 0 -1.57      # 7 start of climb 2                      
+    0 1 0 -1.57      # 8 start vertical                        
+    0 1 0 -1.57      # 9 end vertical                          
+    0 1 0 -1.57      # 10 start top of loop                     
+    0 1 0 -1.57      # 11 end top of loop                       
+    0 1 0 -1.57      # 12 start vertical                        
+    0 1 0 -1.57      # 13 end vertical                          
+    0 1 0 -1.57      # 14 end loop                             
+    0 1 0 -1.57      # 15 start turn 3                          
+    0 1 0 -3.14      # 16 end turn 3                            
+    0 1 0 -3.14      # 17 start turn 4                          
+    0 1 0  1.57      # 18 end turn 4                            
+    0 1 0  1.57      # 19 home again                            
+    0 1 0  1.57      # 20 and again                            
+  ] # end keyValue
+} # end riderY
+
+DEF riderXZ OrientationInterpolator {
+  # Handles the PITCH (variation along the X axis)
+  # and ROLL (variation along Z axis) of the rider
+  key [
+    0         # begin                                  
+    .205      # turn 1 start                           
+    .255      # turn 1 end, climb hill 1              
+    .455      # turn 2 start, top of hill 1           
+    .475      # turn 2 end                            
+    .505      # bottom of hill 1                      
+    .515      # start of climb 2                      
+    .535      # start vertical                        
+    .545      # end vertical                          
+    .555      # start top of loop                     
+    .565      # end top of loop                       
+    .575      # start vertical                        
+    .585      # end vertical                          
+    .595      # end loop                             
+    .655      # start turn 3                          
+    .675      # end turn 3                            
+    .705      # start turn 4                          
+    .785      # end turn 4                            
+    .905      # home again                            
+    1	      # and again                            
+  ] # end key
+
+  keyValue [
+    1 0 0  0.00      # 1 begin                                  
+    1 0 0  0.00      # 2 turn 1 start                           
+    1 0 0  0.78      # 3 turn 1 end, climb hill 1              
+    1 0 0  0.52      # 4 turn 2 start, top of hill 1           
+    0 0 1 -0.78      # 5 turn 2 end                            
+    0 0 1  0.00      # 6 bottom of hill 1                      
+    0 0 1  0.78      # 7 start of climb 2                      
+    0 0 1  1.57      # 8 start vertical                        
+    0 0 1  2.36      # 9 end vertical                          
+    0 0 1  3.14      # 10 start top of loop                     
+    0 0 1  3.92      # 11 end top of loop                       
+    0 0 1  4.70      # 12 start vertical                        
+    0 0 1  5.48      # 13 end vertical                          
+    0 0 1  0.00      # 14 end loop                             
+    1 0 0  0.78      # 15 start turn 3                          
+    0 0 1  1.57      # 16 end turn 3                            
+    0 0 1  0.78      # 17 start turn 4                          
+    0 0 1  0.00      # 18 end turn 4                            
+    0 0 1  0.00      # 19 home again                            
+    0 0 1  0.00      # 20 and again                            
+  ] # end keyValue
+} # end riderXZ
+
+#rider  ( will be animated )
+DEF riderOutside Transform {
+  #vertical rotation
+  rotation 0 0 1 0
+  translation 0 1.5 10
+  children [
+    DEF riderInside Viewpoint{
+      description "rider"
+      position 0 0 0
+      orientation 0 1 0 1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+
+ROUTE clock.fraction_changed TO thePath.set_fraction
+ROUTE thePath.value_changed TO ball.set_translation
+ROUTE thePath.value_changed TO riderOutside.set_translation
+
+ROUTE clock.fraction_changed TO riderY.set_fraction
+ROUTE riderY.value_changed TO riderInside.set_orientation
+
+ROUTE clock.fraction_changed TO riderXZ.set_fraction
+ROUTE riderXZ.value_changed TO riderOutside.set_rotation
+
+ROUTE clock.fraction_changed TO pathTwo.set_fraction
+ROUTE pathTwo.value_changed TO ballTwo.set_translation
+
+
+
+#set a bunch of other viewpoints
+#Note that I needed to define an outer transform to deal with
+#X and z rotations, as the orientation field would not do enough
+
+#ride 1
+Transform {
+  #vertical rotation
+  rotation 0 0 1 0
+  translation 0 1.5 10
+  children [
+    Viewpoint{
+      description "ride1"
+      position 0 0 0
+      orientation 0 1 0 1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 2
+Transform {
+  #vertical rotation
+  rotation 0 0 1 0
+  translation -17 1.5 10
+  children [
+    Viewpoint{
+      description "ride2"
+      position 0 0 0
+      orientation 0 1 0 .78
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 3
+Transform {
+  #vertical rotation
+  rotation 1 0 0 .78
+  translation -20 1.5 7
+  children [
+    Viewpoint{
+      description "ride3"
+      position 0 0 0
+      orientation 0 1 0 0
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 4
+Transform {
+  #vertical rotation
+  translation -20 15.5 -7
+  rotation 1 0 0 .52
+  children [
+    Viewpoint{
+      description "ride4"
+      position 0 0 0
+      orientation 0 1 0  -0.78
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 5
+Transform {
+  #vertical rotation
+  rotation 0 0 1 -.780
+  translation -17 15.5 -10
+  children [
+    Viewpoint{
+      description "ride5"
+      position 0 0 0
+      orientation 0 1 0 -1.57 
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+
+Viewpoint{
+  description "ride6"
+  position -5 4.5 -10
+  orientation 0 1 0 -1.57
+}# end viewpoint
+
+Transform {
+  #vertical rotation
+  rotation 0 0 1 .78
+  translation 0 4.5 -10
+  children [
+    Viewpoint{
+      description "ride7"
+      position 0 0 0
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+Transform {
+  #handle looping
+  rotation 0 0 1 1.57
+  translation 4.5 10 -10
+  children [
+    Viewpoint{
+      description "ride8"
+      position 0 0 0 
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+
+#ride 9
+Transform {
+  #vertical rotation
+  rotation 0 0 1 2.36
+  translation 4.5 12 -10
+  children [
+    Viewpoint{
+      description "ride9"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 10
+Transform {
+  #vertical rotation
+  rotation 0 0 1 3.14
+  translation 3 13.5 -10
+  children [
+    Viewpoint{
+      description "ride10"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 11
+Transform {
+  #vertical rotation
+  rotation 0 0 1 3.92
+  translation 1 13.5 -11
+  children [
+    Viewpoint{
+      description "ride11"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 12
+Transform {
+  #vertical rotation
+  rotation 0 0 1 4.70
+  translation -.5 12 -11
+  children [
+    Viewpoint{
+      description "ride12"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 13
+Transform {
+  #vertical rotation
+  rotation 0 0 1 5.48
+  translation -0.5 10 -11
+  children [
+    Viewpoint{
+      description "ride13"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 14
+Transform {
+  #vertical rotation
+  rotation 0 0 1 0
+  translation 5 7.5 -11
+  children [
+    Viewpoint{
+      description "ride14"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 15
+Transform {
+  #roll
+  rotation 1 0 0 .78
+  translation 17 10.5 -9.5
+  children [
+    Viewpoint{
+      description "ride15"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 16
+Transform {
+  #vertical rotation
+  rotation 0 0 1 1.57
+  translation 20 10.5 -7
+  children [
+    Viewpoint{
+      description "ride16"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -3.14
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 17
+Transform {
+  #vertical rotation
+  rotation 0 0 1 .78
+  translation 20 1.5 7
+  children [
+    Viewpoint{
+      description "ride17"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 -3.14
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride 18
+Transform {
+  #vertical rotation
+  rotation 0 0 1 0
+  translation 17 1.5 10
+  children [
+    Viewpoint{
+      description "ride18"
+      position 0 0 0
+      #horizontal rotation
+      orientation 0 1 0 1.57
+    }# end viewpoint
+  ] # end children
+} # end transform
+
+#ride19
+Viewpoint{
+  description "ride19"
+  position 0 1.5 10
+  orientation 0 1 0 1.57
+}# end viewpoint
+
+
+
+
+
+
+
+
+
+
+
+
+
