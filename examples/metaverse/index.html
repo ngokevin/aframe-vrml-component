@@ -37,7 +37,7 @@
                      repeat="indefinite"></a-animation>
       </a-entity>
 
-      <a-entity vrml="#figure" position="5 1 -25">
+      <a-entity vrml="#figure" position="5 1 -21">
         <a-animation attribute="rotation" dur="2000" to="-360 0 0"
                      repeat="indefinite"></a-animation>
       </a-entity>
@@ -54,10 +54,13 @@
         <a-box color="#EEE" position="-15 16 -30" opacity="0.6" width="10" depth="3"></a-box>
       </a-entity>
 
+      <a-entity vrml="#figure" position="5 -2.5 -35" rotation="-90 0 0"></a-entity>
+      <a-entity vrml="#figure" position="5 -1 -35" rotation="90 180 0"></a-entity>
+
       <a-sky color="#3EC1D3"></a-sky>
       <a-plane color="#9ED79A" shader="flat" height="100" width="100" rotation="-90 0 0"
                position="0 -6 0"></a-plane>
-      <a-camera position="0 1.5 6"></a-camera>
+      <a-camera position="0 1.5 6" wasd-controls="acceleration: 160"></a-camera>
     </a-scene>
   </body>
 </html>
