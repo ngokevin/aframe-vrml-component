@@ -1,0 +1,141 @@
+#VRML V2.0 utf8
+
+DEF staircase Transform {
+  scale .5 .5 .5
+  children [
+
+    DEF steps Group {
+      children [
+        DEF stair Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 1 0
+            } # end material
+          } # end appearance
+          geometry Box {
+            size 1 1 4
+          } # end Box
+        } #end stair
+    
+        Transform {
+          translation 1 1 0
+          children [
+            USE stair
+          ] # end children
+        } # end transform
+    
+        Transform {
+          translation 2 2 0
+          children [
+            USE stair
+          ] # end children
+        } # end transform
+    
+        Transform {
+          translation 3 3 0
+          children [
+            USE stair
+          ] # end children
+        } # end transform
+    
+        Transform {
+          translation 4 4 0
+          children [
+            USE stair
+          ] # end children
+        } # end transform
+    
+      ] # end children
+    } # end steps
+    
+    Transform{
+      translation -5 -5 0
+      children [
+        USE steps
+      ] # end children
+    } # end transform
+    
+    Transform {
+      translation 6.5 5 2
+      children [
+        DEF landing Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 1 0
+            } # end material
+          } # end appearance
+          geometry Box {
+            size 4 1 8
+          } # end Box
+        } # end landing
+      ] # end children
+    } # end transform
+    
+    Transform {
+      translation 4 6 4
+      rotation 0 1 0 3.14
+      children [
+        USE steps
+      ] # end children
+    } # end transform
+    
+    Transform {
+      translation -1 11 4 
+      rotation 0 1 0 3.14
+      children [
+        USE steps
+      ] # end children
+    } # end transform
+    
+    Transform {
+      translation -7.5 16 2
+      children [
+        USE landing
+      ] # end children
+    } # end transform
+    
+    #wall 1
+    Transform {
+      translation -.5 5 6
+      children [
+        DEF wall Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor .5 .5 .5
+            } # end material
+          } # end appearance
+          geometry Box {
+            size 18 23 .1
+          } # end geometry
+        } # end shape
+      ] # end children
+    } # end transform
+    
+    #wall 2
+    Transform {
+      translation -.5 5 -2
+      children [
+        USE wall
+      ] # end children
+    } # end transform
+    
+    # back wall
+    Transform {
+      translation 8.5 5 2
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor .5 .5 .5
+            } # end material
+          } # end appearance
+          geometry Box {
+            size .1 23 8
+          } # end geometry
+        } # end shape
+      ] # end children
+    } # end transform
+  
+  ] #end staircase children
+} # end staircase
+
